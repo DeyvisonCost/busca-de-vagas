@@ -1,0 +1,23 @@
+{
+  "name": "busca-de-vagas",
+  "displayName": "Busca de vagas",
+  "version": "0.2.0",
+  "description": "Esteira de busca de emprego: entrevista, perfil mestre, CVs ATS (PT/EN), equalização de LinkedIn/Gupy/Indeed, critérios e nota de vagas, varredura agendada, rastreador, CV por vaga, envio assistido e contato com recrutadores.",
+  "author": {
+    "name": "DeyvisonCost",
+    "url": "https://github.com/DeyvisonCost"
+  },
+  "license": "MIT",
+  "keywords": [
+    "job-search",
+    "busca-de-emprego",
+    "curriculo",
+    "resume",
+    "ats",
+    "linkedin",
+    "gupy",
+    "candidaturas"
+  ],
+  "homepage": "https://github.com/DeyvisonCost/busca-de-vagas",
+  "repository": "https://github.com/DeyvisonCost/busca-de-vagas"
+}

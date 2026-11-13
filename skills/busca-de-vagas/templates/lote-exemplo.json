@@ -1,0 +1,14 @@
+[
+  {"arquivo": "empresa-ficticia-engenheira-dados-senior", "vaga": "Empresa Fictícia — Engenheira(o) de Dados Sênior", "lang": "pt",
+   "titulo": "Engenheira de Dados Sênior | dbt · Airflow · AWS",
+   "foco": "Engenheira de dados sênior com experiência em migração de pipelines para dbt e Airflow e redução de custo de warehouse.",
+   "competencias_primeiro": ["Nuvem", "Qualidade"],
+   "pretensao": "[pretensão conforme criterios.md]",
+   "notas": "Envio manual pelo LinkedIn (você clica). Confirmar que é 100% remota antes de enviar."},
+  {"arquivo": "example-co-senior-data-engineer", "vaga": "Example Co — Senior Data Engineer", "lang": "en",
+   "titulo": "Senior Data Engineer | Python · SQL · dbt",
+   "foco": "Senior data engineer who migrated 120 pipelines to Airflow and dbt.",
+   "competencias_primeiro": ["Data"],
+   "pretensao": "[expected compensation per criterios.md]",
+   "notas": "Greenhouse form; cover letter optional."}
+]

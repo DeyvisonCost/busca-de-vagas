@@ -1,0 +1,31 @@
+{
+  "_comentario": "EXEMPLO FICTÍCIO. Pessoa, empresas e números inventados só para mostrar o formato. Copie para cv/cv-pt.json e substitua tudo por dados do perfil-mestre.md.",
+  "lang": "pt-BR",
+  "name": "ANA EXEMPLO DA SILVA",
+  "title": "Engenheira de Dados Sênior | Analytics Engineering | Python · SQL · dbt",
+  "contact": "Curitiba, PR (remoto) · (00) 90000-0000 · ana.exemplo@example.com · linkedin.com/in/ana-exemplo",
+  "sections": [
+    {"id": "summary", "title": "RESUMO", "items": [
+      ["p", "Engenheira de dados com 7 anos de experiência construindo pipelines e modelos analíticos em nuvem, 2 deles como referência técnica de um time de 5 pessoas. Foco em qualidade de dados, custo de infraestrutura e entrega de métricas confiáveis para Produto e Finanças."]
+    ]},
+    {"id": "highlights", "title": "DESTAQUES", "items": [
+      ["b", "Reduziu em 40% o custo mensal do data warehouse revisando modelos e particionamento."],
+      ["b", "Levou a cobertura de testes de dados de 0 para 85% dos modelos críticos."]
+    ]},
+    {"id": "experience", "title": "EXPERIÊNCIA PROFISSIONAL", "items": [
+      ["job", "Empresa Fictícia Pagamentos", "Engenheira de Dados Sênior", "2022 – atual"],
+      ["b", "Referência técnica de um time de 5 pessoas: padrões de modelagem, code review e onboarding."],
+      ["b", "Migrou 120 pipelines legados para orquestração com Airflow e dbt, com SLA de atualização de 1 hora."],
+      ["job", "Loja Exemplo S.A.", "Engenheira de Dados", "2019 – 2022"],
+      ["b", "Construiu o modelo de receita usado no fechamento mensal, eliminando 3 dias de conciliação manual."]
+    ]},
+    {"id": "skills", "title": "COMPETÊNCIAS", "items": [
+      ["kv", "Dados", "Python, SQL, dbt, Airflow, Spark"],
+      ["kv", "Nuvem", "AWS (S3, Glue, Redshift), Terraform, CI/CD"],
+      ["kv", "Qualidade", "Testes de dados, observabilidade, contratos de dados"]
+    ]},
+    {"id": "education", "title": "FORMAÇÃO", "items": [
+      ["b", "Bacharelado em Sistemas de Informação – Universidade Exemplo"]
+    ]}
+  ]
+}

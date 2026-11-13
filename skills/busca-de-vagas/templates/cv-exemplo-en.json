@@ -1,0 +1,27 @@
+{
+  "_comment": "FICTITIOUS EXAMPLE. Person, companies and numbers are made up to show the format. Copy to cv/cv-en.json and replace everything with data from perfil-mestre.md.",
+  "lang": "en",
+  "name": "ANA EXAMPLE DA SILVA",
+  "title": "Senior Data Engineer | Analytics Engineering | Python · SQL · dbt",
+  "contact": "Curitiba, Brazil (remote) · +55 00 90000-0000 · ana.example@example.com · linkedin.com/in/ana-example",
+  "sections": [
+    {"id": "summary", "title": "SUMMARY", "items": [
+      ["p", "Data engineer with 7 years building cloud pipelines and analytics models, 2 of them as technical reference for a 5-person team. Focused on data quality, infrastructure cost and reliable metrics for Product and Finance."]
+    ]},
+    {"id": "experience", "title": "EXPERIENCE", "items": [
+      ["job", "Fictional Payments Co.", "Senior Data Engineer", "2022 – present"],
+      ["b", "Technical reference for a 5-person team: modeling standards, code review and onboarding."],
+      ["b", "Migrated 120 legacy pipelines to Airflow and dbt with a 1-hour freshness SLA."],
+      ["job", "Example Retail Inc.", "Data Engineer", "2019 – 2022"],
+      ["b", "Built the revenue model used for monthly close, removing 3 days of manual reconciliation."]
+    ]},
+    {"id": "skills", "title": "SKILLS", "items": [
+      ["kv", "Data", "Python, SQL, dbt, Airflow, Spark"],
+      ["kv", "Cloud", "AWS (S3, Glue, Redshift), Terraform, CI/CD"],
+      ["kv", "Quality", "Data testing, observability, data contracts"]
+    ]},
+    {"id": "education", "title": "EDUCATION", "items": [
+      ["b", "B.Sc. in Information Systems – Example University"]
+    ]}
+  ]
+}

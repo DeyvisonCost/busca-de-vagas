@@ -1,0 +1,11 @@
+{
+  "name": "busca-de-vagas",
+  "owner": { "name": "DeyvisonCost" },
+  "plugins": [
+    {
+      "name": "busca-de-vagas",
+      "source": "./",
+      "description": "Esteira de busca de emprego e candidaturas assistidas para Claude Code."
+    }
+  ]
+}

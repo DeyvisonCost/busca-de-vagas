@@ -1,0 +1,299 @@
+<title>{{TITLE}}</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: painel operacional de uma coluna — resumo do funil no topo, horários de publicação, depois a fila de vagas em linhas densas */
+:root {
+  --bg: #f4f6f5;
+  --surface: #ffffff;
+  --ink: #15211d;
+  --muted: #5d6b66;
+  --line: #dde4e1;
+  --accent: #0e7c66;
+  --accent-soft: #d8efe8;
+  --ok: #1d7a3a;
+  --ok-soft: #dcf1e2;
+  --warn: #9a5b00;
+  --warn-soft: #fbecd2;
+  --bad: #b3261e;
+  --bad-soft: #f8dedb;
+  --info: #2457a6;
+  --info-soft: #dde8f8;
+  --bar: #0e7c66;
+  --font-display: "Schibsted Grotesk", "Segoe UI", system-ui, sans-serif;
+  --font-body: "Schibsted Grotesk", "Segoe UI", system-ui, sans-serif;
+  --font-data: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0f1513; --surface: #17201d; --ink: #e6eeeb; --muted: #95a49f; --line: #2a3632;
+    --accent: #3cc3a2; --accent-soft: #163d34; --ok: #6fd28d; --ok-soft: #173826;
+    --warn: #f0b45a; --warn-soft: #3d2e14; --bad: #f08a80; --bad-soft: #401c19;
+    --info: #8fb4f0; --info-soft: #1b2b45; --bar: #3cc3a2; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0f1513; --surface: #17201d; --ink: #e6eeeb; --muted: #95a49f; --line: #2a3632;
+  --accent: #3cc3a2; --accent-soft: #163d34; --ok: #6fd28d; --ok-soft: #173826;
+  --warn: #f0b45a; --warn-soft: #3d2e14; --bad: #f08a80; --bad-soft: #401c19;
+  --info: #8fb4f0; --info-soft: #1b2b45; --bar: #3cc3a2; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 15px; line-height: 1.45;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 20px 40px;
+}
+.wrap { max-width: 980px; margin: 0 auto; display: grid; gap: 22px; }
+header { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 8px 20px; }
+h1 { font-family: var(--font-display); font-size: 1.75rem; font-weight: 700; letter-spacing: -0.02em; margin: 0; text-wrap: balance; }
+.sub { color: var(--muted); margin: 2px 0 0; }
+.stamp { font-family: var(--font-data); font-size: 0.78rem; color: var(--muted); }
+h2 { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin: 0 0 10px; font-weight: 600; }
+
+.funnel { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; }
+.stat { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; display: grid; gap: 2px; }
+.stat b { font-family: var(--font-data); font-size: 1.6rem; font-weight: 500; font-variant-numeric: tabular-nums; }
+.stat span { color: var(--muted); font-size: 0.82rem; }
+.stat.goal { border-color: var(--accent); background: var(--accent-soft); }
+
+.chart-box { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px; }
+.chart-scroll { overflow-x: auto; }
+.chart-note { color: var(--muted); font-size: 0.82rem; margin: 8px 0 0; }
+svg text { fill: var(--muted); font-family: var(--font-data); font-size: 10px; }
+
+.toolbar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.chip { font: inherit; font-size: 0.85rem; border: 1px solid var(--line); background: var(--surface); color: var(--ink); border-radius: 999px; padding: 5px 12px; cursor: pointer; }
+.chip[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.chip:focus-visible, select:focus-visible, input:focus-visible, a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+#busca { flex: 1 1 200px; min-width: 0; font: inherit; padding: 6px 12px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); color: var(--ink); }
+
+.list { display: grid; gap: 8px; }
+.row { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; display: grid; grid-template-columns: auto 1fr auto; gap: 4px 14px; align-items: start; }
+.score { font-family: var(--font-data); font-size: 1.1rem; font-weight: 500; width: 2.6rem; height: 2.6rem; border-radius: 8px; display: grid; place-items: center; background: var(--accent-soft); color: var(--accent); font-variant-numeric: tabular-nums; }
+.score.mid { background: var(--warn-soft); color: var(--warn); }
+.main { min-width: 0; display: grid; gap: 3px; }
+.title { font-weight: 600; overflow-wrap: anywhere; }
+.title a { color: inherit; text-decoration: none; border-bottom: 1px solid var(--line); }
+.title a:hover { border-color: var(--accent); }
+.meta { color: var(--muted); font-size: 0.85rem; display: flex; flex-wrap: wrap; gap: 2px 12px; }
+.meta .mono { font-family: var(--font-data); font-size: 0.8rem; }
+.note { font-size: 0.85rem; overflow-wrap: anywhere; }
+.tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 2px; }
+.tag { font-size: 0.75rem; border-radius: 6px; padding: 1px 7px; background: var(--info-soft); color: var(--info); }
+.tag.manual { background: var(--warn-soft); color: var(--warn); }
+.side { display: grid; gap: 6px; justify-items: end; }
+select { font: inherit; font-size: 0.85rem; padding: 4px 8px; border-radius: 8px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); }
+.pill { font-size: 0.78rem; font-weight: 600; border-radius: 999px; padding: 2px 10px; white-space: nowrap; }
+.s-nova { background: var(--info-soft); color: var(--info); }
+.s-preparada { background: var(--accent-soft); color: var(--accent); }
+.s-enviada { background: var(--ok-soft); color: var(--ok); }
+.s-resposta, .s-entrevista, .s-proposta { background: var(--ok); color: var(--surface); }
+.s-bloqueada { background: var(--warn-soft); color: var(--warn); }
+.s-descartada, .s-recusada { background: var(--bad-soft); color: var(--bad); }
+
+.empty, .status-line { color: var(--muted); background: var(--surface); border: 1px dashed var(--line); border-radius: 10px; padding: 18px; }
+@media (max-width: 560px) {
+  .row { grid-template-columns: auto 1fr; }
+  .side { grid-column: 1 / -1; justify-items: start; grid-auto-flow: column; justify-content: start; align-items: center; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<div class="wrap">
+  <header>
+    <div>
+      <h1 id="h-title">{{TITLE}}</h1>
+      <p class="sub">{{SUBTITLE}}</p>
+    </div>
+    <span class="stamp" id="stamp">…</span>
+  </header>
+
+  <section aria-labelledby="h-funil">
+    <h2 id="h-funil"></h2>
+    <div class="funnel" id="funnel"></div>
+  </section>
+
+  <section aria-labelledby="h-hora">
+    <h2 id="h-hora"></h2>
+    <div class="chart-box">
+      <div class="chart-scroll" id="chart"></div>
+      <p class="chart-note" id="chart-note"></p>
+    </div>
+  </section>
+
+  <section aria-labelledby="h-vagas">
+    <h2 id="h-vagas"></h2>
+    <div class="toolbar" id="filters" role="group"></div>
+    <div style="height:8px"></div>
+    <input id="busca" type="search">
+    <div style="height:10px"></div>
+    <div class="list" id="list"></div>
+  </section>
+</div>
+
+<script>
+(function () {
+  // Preenchido por init_workspace.py. Nenhum dado pessoal fica embutido: as vagas vêm do banco do Artifact.
+  const CONFIG = { lang: "{{LANG}}", tz: "{{TZ}}", cutoff: Number("{{CUTOFF}}") || 6, goal: Number("{{GOAL}}") || 5 };
+  const I18N = {
+    pt: {
+      locale: "pt-BR", funnel: "Funil", hours: "Horário de publicação das vagas encontradas", jobs: "Vagas",
+      queue: "Na fila para envio", sent: "Enviadas", replies: "Respostas", goal: (g) => `Entrevistas na semana · meta ${g}`,
+      status: { nova: "Nova", preparada: "Pronta p/ envio", enviada: "Enviada", bloqueada: "Bloqueada", resposta: "Resposta",
+                entrevista: "Entrevista", proposta: "Proposta", recusada: "Recusada", descartada: "Descartada" },
+      filters: { todas: "Todas", preparada: "Prontas", bloqueada: "Bloqueadas", enviada: "Enviadas", entrevista: "Entrevistas" },
+      filterLabel: "Filtrar por status", search: "Buscar por empresa, cargo ou fonte",
+      chartAria: "Vagas por hora de publicação", chartBar: (h, n) => `${h}h: ${n} vaga(s)`,
+      chartEmpty: "Cada varredura registra a hora em que a vaga foi publicada. Com o tempo, o gráfico mostra quando as empresas mais publicam.",
+      chartNote: (t, s) => `${t} vaga(s) com horário de publicação conhecido${s ? `, ${s} sem horário informado pela fonte` : ""}.`,
+      empty: (c) => `Nenhuma vaga ainda. A primeira varredura preenche esta lista com as vagas de nota ${c} ou mais, já com currículo ajustado.`,
+      emptyFilter: "Nenhuma vaga neste filtro.", score: "Nota de compatibilidade", noCompany: "Empresa não informada",
+      published: "publicada", noDate: "publicação sem data", obs: "Obs.", manual: "Envio manual (você clica)", cv: "CV",
+      lastScan: "Última varredura", waiting: "Aguardando a primeira varredura", openInClaude: "Abra esta página no Claude para ver as vagas.",
+      signIn: "Entre na sua conta para ver as vagas.", slow: "Não consegui carregar as vagas ainda. Verifique a conexão.",
+      saveFail: "Não foi possível salvar o status. Tente de novo.", unavailable: "A lista ficou indisponível. Recarregue a página."
+    },
+    en: {
+      locale: "en-US", funnel: "Funnel", hours: "Posting time of the jobs found", jobs: "Jobs",
+      queue: "Ready to apply", sent: "Applied", replies: "Replies", goal: (g) => `Interviews this week · goal ${g}`,
+      status: { nova: "New", preparada: "Ready", enviada: "Applied", bloqueada: "Blocked", resposta: "Reply",
+                entrevista: "Interview", proposta: "Offer", recusada: "Rejected", descartada: "Discarded" },
+      filters: { todas: "All", preparada: "Ready", bloqueada: "Blocked", enviada: "Applied", entrevista: "Interviews" },
+      filterLabel: "Filter by status", search: "Search by company, role or source",
+      chartAria: "Jobs by posting hour", chartBar: (h, n) => `${h}h: ${n} job(s)`,
+      chartEmpty: "Each scan records when the job was posted. Over time this chart shows when companies post the most.",
+      chartNote: (t, s) => `${t} job(s) with a known posting time${s ? `, ${s} without one` : ""}.`,
+      empty: (c) => `No jobs yet. The first scan fills this list with jobs scoring ${c} or more, each with a tailored resume.`,
+      emptyFilter: "No jobs match this filter.", score: "Match score", noCompany: "Company not disclosed",
+      published: "posted", noDate: "no posting date", obs: "Note", manual: "Manual submit (you click)", cv: "CV",
+      lastScan: "Last scan", waiting: "Waiting for the first scan", openInClaude: "Open this page in Claude to see the jobs.",
+      signIn: "Sign in to see the jobs.", slow: "Couldn't load the jobs yet. Check your connection.",
+      saveFail: "Couldn't save the status. Try again.", unavailable: "The list became unavailable. Reload the page."
+    }
+  };
+  const T = I18N[CONFIG.lang] || I18N.pt;
+  const STATUS = Object.entries(T.status);
+  const FILTERS = Object.entries(T.filters);
+  const SENT = ["enviada", "resposta", "entrevista", "proposta", "recusada"];
+  const REPLIED = ["resposta", "entrevista", "proposta", "recusada"];
+  let rows = [], filter = "todas", query = "", canWrite = true, dbRef = null;
+
+  const $ = (id) => document.getElementById(id);
+  const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const fmt = (iso, opts) => { try { return new Intl.DateTimeFormat(T.locale, Object.assign({ timeZone: CONFIG.tz }, opts)).format(new Date(iso)); } catch (e) { return ""; } };
+  const hourOf = (iso) => { const h = fmt(iso, { hour: "2-digit", hourCycle: "h23" }); return h === "" ? null : parseInt(h, 10); };
+  const safeUrl = (u) => /^https?:\/\//i.test(u || "") ? u : null;
+  const DT = { day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" };
+
+  document.documentElement.lang = T.locale;
+  $("h-funil").textContent = T.funnel; $("h-hora").textContent = T.hours; $("h-vagas").textContent = T.jobs;
+  $("filters").setAttribute("aria-label", T.filterLabel);
+  $("busca").placeholder = T.search; $("busca").setAttribute("aria-label", T.search);
+
+  function weekStart() { const d = new Date(); const day = (d.getDay() + 6) % 7; d.setHours(0, 0, 0, 0); d.setDate(d.getDate() - day); return d; }
+
+  function renderFilters() {
+    $("filters").innerHTML = FILTERS.map(([k, l]) => `<button class="chip" type="button" data-f="${k}" aria-pressed="${k === filter}">${l}</button>`).join("");
+  }
+
+  function renderFunnel() {
+    const c = (s) => rows.filter((r) => r.status === s).length;
+    const ws = weekStart();
+    const week = rows.filter((r) => r.status === "entrevista" && r.atualizadoEm && new Date(r.atualizadoEm) >= ws).length;
+    const vals = [[c("preparada") + c("nova"), T.queue], [rows.filter((r) => SENT.includes(r.status)).length, T.sent],
+                  [rows.filter((r) => REPLIED.includes(r.status)).length, T.replies], [week, T.goal(CONFIG.goal)]];
+    $("funnel").innerHTML = vals.map(([v, l], i) => `<div class="stat${i === 3 ? " goal" : ""}"><b>${v}</b><span>${esc(l)}</span></div>`).join("");
+  }
+
+  function renderChart() {
+    const counts = new Array(24).fill(0); let sem = 0;
+    rows.forEach((r) => { const h = r.publicadaEm ? hourOf(r.publicadaEm) : null; if (h === null || isNaN(h)) sem++; else counts[h]++; });
+    const max = Math.max(1, ...counts);
+    const W = 24 * 28 + 30, H = 150, top = 14, base = 120, bw = 18;
+    let svg = `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="${esc(T.chartAria)}">`;
+    [0.5, 1].forEach((f) => { const y = base - (base - top) * f; svg += `<line x1="24" x2="${W}" y1="${y}" y2="${y}" stroke="var(--line)" stroke-width="1"/><text x="0" y="${y + 3}">${Math.round(max * f)}</text>`; });
+    svg += `<line x1="24" x2="${W}" y1="${base}" y2="${base}" stroke="var(--line)" stroke-width="1"/>`;
+    counts.forEach((n, h) => {
+      const x = 30 + h * 28, bh = (base - top) * (n / max);
+      if (n > 0) svg += `<rect x="${x}" y="${base - bh}" width="${bw}" height="${bh}" rx="3" fill="var(--bar)"><title>${esc(T.chartBar(h, n))}</title></rect>`;
+      if (h % 2 === 0) svg += `<text x="${x + bw / 2}" y="${base + 16}" text-anchor="middle">${String(h).padStart(2, "0")}h</text>`;
+    });
+    $("chart").innerHTML = svg + "</svg>";
+    const total = counts.reduce((a, b) => a + b, 0);
+    $("chart-note").textContent = total === 0 ? T.chartEmpty : `${T.chartNote(total, sem)} (${CONFIG.tz})`;
+  }
+
+  function renderList() {
+    const q = query.trim().toLowerCase();
+    let list = rows.filter((r) => filter === "todas" || r.status === filter || (filter === "preparada" && r.status === "nova"));
+    if (q) list = list.filter((r) => [r.titulo, r.empresa, r.fonte].join(" ").toLowerCase().includes(q));
+    list.sort((a, b) => (b.nota || 0) - (a.nota || 0) || String(b.encontradaEm || "").localeCompare(String(a.encontradaEm || "")));
+    if (!rows.length) { $("list").innerHTML = `<div class="empty">${esc(T.empty(CONFIG.cutoff))}</div>`; return; }
+    if (!list.length) { $("list").innerHTML = `<div class="empty">${esc(T.emptyFilter)}</div>`; return; }
+    $("list").innerHTML = list.map((r) => {
+      const url = safeUrl(r.link);
+      const titulo = url ? `<a href="${esc(url)}" target="_blank" rel="noopener">${esc(r.titulo)}</a>` : esc(r.titulo);
+      const pub = r.publicadaEm ? `${T.published} ${fmt(r.publicadaEm, DT)}` : T.noDate;
+      const tags = [];
+      if (r.regime) tags.push(`<span class="tag">${esc(r.regime)}</span>`);
+      if (r.salario) tags.push(`<span class="tag">${esc(r.salario)}</span>`);
+      if (r.envioManual) tags.push(`<span class="tag manual">${esc(T.manual)}</span>`);
+      if (r.cvArquivo) tags.push(`<span class="tag">${T.cv}: ${esc(r.cvArquivo)}</span>`);
+      const select = canWrite
+        ? `<select id="st-${esc(r.id)}" data-id="${esc(r.id)}" aria-label="Status">${STATUS.map(([k, l]) => `<option value="${k}"${k === r.status ? " selected" : ""}>${esc(l)}</option>`).join("")}</select>`
+        : "";
+      return `<article class="row">
+        <div class="score${(r.nota || 0) < CONFIG.cutoff + 1 ? " mid" : ""}" title="${esc(T.score)}">${esc(r.nota ?? "–")}</div>
+        <div class="main">
+          <div class="title">${titulo}</div>
+          <div class="meta"><span>${esc(r.empresa || T.noCompany)}</span><span>${esc(r.fonte || "")}</span><span class="mono">${pub}</span></div>
+          ${r.motivo ? `<div class="note">${esc(r.motivo)}</div>` : ""}
+          ${r.obs ? `<div class="note"><b>${esc(T.obs)}:</b> ${esc(r.obs)}</div>` : ""}
+          ${tags.length ? `<div class="tags">${tags.join("")}</div>` : ""}
+        </div>
+        <div class="side"><span class="pill s-${esc(r.status)}">${esc(T.status[r.status] || r.status || T.status.nova)}</span>${select}</div>
+      </article>`;
+    }).join("");
+  }
+
+  function renderAll() { renderFunnel(); renderChart(); renderList(); }
+
+  $("filters").addEventListener("click", (e) => {
+    const b = e.target.closest("[data-f]"); if (!b) return;
+    filter = b.dataset.f; renderFilters(); renderList();
+  });
+  $("busca").addEventListener("input", (e) => { query = e.target.value; renderList(); });
+  $("list").addEventListener("change", async (e) => {
+    const s = e.target.closest("select[data-id]"); if (!s || !dbRef) return;
+    s.disabled = true;
+    try { await dbRef.collection("vagas").doc(s.dataset.id).update({ status: s.value, atualizadoEm: new Date().toISOString() }); }
+    catch (err) {
+      if (err && err.code === "invalid_argument") { canWrite = false; renderList(); }
+      $("stamp").textContent = T.saveFail;
+    }
+    finally { s.disabled = false; }
+  });
+
+  renderFilters(); renderAll();
+
+  (async function start() {
+    const claude = window.claude;
+    if (!claude || !claude.use) { $("stamp").textContent = T.openInClaude; return; }
+    const [db, user] = await Promise.all([claude.use("db"), claude.use("user")]);
+    if (!db) { $("stamp").textContent = T.signIn; return; }
+    dbRef = db;
+    if (user && typeof user.can === "function") { try { const c = await user.can("data.write"); if (c === false) canWrite = false; } catch (e) {} }
+    const timer = setTimeout(() => { $("stamp").textContent = T.slow; }, 10000);
+    db.collection("vagas").limit(1000).onSnapshot((snap) => {
+      if (!snap.metadata.fromCache) clearTimeout(timer);
+      rows = snap.docs.map((d) => Object.assign({ id: d.id }, d.data()));
+      const last = rows.map((r) => r.encontradaEm || "").sort().pop();
+      $("stamp").textContent = last ? `${T.lastScan}: ${fmt(last, DT)}` : T.waiting;
+      renderAll();
+    }, () => { clearTimeout(timer); $("stamp").textContent = T.unavailable; });
+  })();
+})();
+</script>

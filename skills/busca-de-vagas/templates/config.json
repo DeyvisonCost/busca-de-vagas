@@ -1,0 +1,26 @@
+{
+  "idioma": "pt",
+  "fuso": "America/Sao_Paulo",
+  "rastreador_url": null,
+  "cv_base": {
+    "pt": "cv/cv-pt.json",
+    "en": "cv/cv-en.json"
+  },
+  "corte_nota": 6,
+  "teto_diario": 20,
+  "meta_entrevistas_semana": 5,
+  "sigilo": false,
+  "conectores": {
+    "gmail": null,
+    "google_calendar": null,
+    "google_drive": null
+  },
+  "checagem_email": "diaria",
+  "ultima_checagem_email": null,
+  "respostas_padrao": [
+    "Modelo: [CONFIRMAR] · Localização: [CONFIRMAR]",
+    "Disponibilidade: [CONFIRMAR]",
+    "Idiomas: [CONFIRMAR — só informar quando perguntado]",
+    "Links: [CONFIRMAR LinkedIn / GitHub / portfólio]"
+  ]
+}
