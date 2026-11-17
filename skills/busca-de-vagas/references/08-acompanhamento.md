@@ -28,3 +28,17 @@ Para cada vaga enviada (prioridade por nota):
   mais frequentes (gráfico do rastreador) e proponha ajustes de critérios ou termos — aplicar só com aprovação.
 - Prepare a entrevista quando marcada: resumo da empresa e da vaga, perguntas prováveis, histórias do perfil
   mestre (formato situação → ação → resultado).
+
+## Diagnóstico de rejeições
+Quando as recusas se acumulam (ou a taxa de resposta cai), revise antes de mexer nos critérios:
+- **Encerrada × recusada:** separe "vaga encerrada/congelada pela empresa" (não conta como rejeição; anote na
+  `obs`) das recusas de verdade.
+- **Salário eliminatório:** confira o que foi respondido nas perguntas de faixa salarial contra a regra da
+  faixa do `criterios.md`.
+- **Nota e stack:** quantas recusas são de vagas com nota baixa ou fora da stack principal.
+- **Cobertura ATS:** compare a `cobertura` das recusadas com a das que avançaram; CVs antigos sem medição
+  ("–") podem ser a causa.
+- **Candidatura tardia:** vagas que já tinham mais de 100 candidatos quando o usuário aplicou.
+- **Idioma visível:** o nível de idioma mostrado no perfil do LinkedIn pode cortar antes da entrevista;
+  compare com o que as vagas pedem.
+Mostre o diagnóstico em poucas linhas e proponha ajustes; aplicar só com aprovação.

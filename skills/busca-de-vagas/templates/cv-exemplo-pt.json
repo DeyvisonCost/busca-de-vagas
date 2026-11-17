@@ -16,8 +16,10 @@
       ["job", "Empresa Fictícia Pagamentos", "Engenheira de Dados Sênior", "2022 – atual"],
       ["b", "Referência técnica de um time de 5 pessoas: padrões de modelagem, code review e onboarding."],
       ["b", "Migrou 120 pipelines legados para orquestração com Airflow e dbt, com SLA de atualização de 1 hora."],
+      ["stack", "Stack: Python, SQL, dbt, Airflow, AWS (S3, Glue, Redshift), Terraform"],
       ["job", "Loja Exemplo S.A.", "Engenheira de Dados", "2019 – 2022"],
-      ["b", "Construiu o modelo de receita usado no fechamento mensal, eliminando 3 dias de conciliação manual."]
+      ["b", "Construiu o modelo de receita usado no fechamento mensal, eliminando 3 dias de conciliação manual."],
+      ["stack", "Stack: Python, SQL, PostgreSQL, Power BI"]
     ]},
     {"id": "skills", "title": "COMPETÊNCIAS", "items": [
       ["kv", "Dados", "Python, SQL, dbt, Airflow, Spark"],

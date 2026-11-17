@@ -14,7 +14,8 @@ anotando a data ao lado do item alterado.
 | Senioridade | 1 | 1 = compatível com anos de experiência/liderança |
 | Publicada há ≤ 24h | 1 | 1 = sim; 0 = mais antiga ou sem data |
 
-- **Corte configurável** (`corte_nota` no config.json; padrão 6). Abaixo do corte, não registra.
+- **Corte configurável** (`corte_nota` no config.json; padrão 6). É escolha do usuário: se o volume de vagas
+  estiver baixo, ele pode descer para 5 (anote a data). Abaixo do corte, não registra.
 - **Ajuste por idioma:** −3 quando a vaga exige fluência acima do nível real do usuário; sem desconto quando
   pede só leitura/escrita, não menciona ou aceita o nível dele.
 - Os pesos podem mudar por usuário (ex.: quem aceita híbrido tira o eliminatório). Mantenha soma 10.
@@ -33,6 +34,22 @@ Defina com o usuário (seções correspondentes do template): o que pode ir sem 
 (LinkedIn por padrão), como tratar CAPTCHA, perguntas factuais, pretensão por regime, disponibilidade,
 links. Copie as respostas-padrão também para `respostas_padrao` no `config.json` (o `tailor.py` as escreve
 em cada `-respostas.md`).
+
+## Salário em perguntas eliminatórias
+Formulários com pergunta de salário em faixas (ou "qual sua pretensão?" com corte automático) eliminam quem
+responde acima do teto da vaga. Combine com o usuário, por regime (CLT, PJ, USD):
+- **Piso-alvo** (o que ele quer) e **faixa aceitável mín–máx** (o mínimo é o limite real).
+- Opções em faixa: escolher **sempre a que contém o piso-alvo cheio**; descer **uma** faixa só se a vaga
+  sinaliza teto menor (salário informado abaixo, porte, senioridade); **nunca** abaixo do mínimo.
+- Campo aberto: responder o alvo ou a faixa ("CLT R$ X a R$ Y").
+Grave a faixa na seção "Pisos" do `criterios.md`.
+
+## Dados confirmados (pergunte uma vez)
+Toda resposta factual que o usuário der durante as candidaturas (salário atual, data de nascimento, tem CNPJ e
+emite nota, telefone correto, endereço sem número, PcD sim/não se ele quiser responder…) vai para
+`criterios.md` → "Respostas-padrão", com a data, e não é perguntada de novo. Dados salvos nas plataformas
+podem estar velhos (ex.: telefone antigo no LinkedIn): corrija a cada candidatura. Plataforma que exige criar
+conta com senha → o usuário decide; se recusar, registre e descarte as vagas que dependem dela.
 
 ## Plano
 Termine a fase com um plano curto: volume diário, horários de varredura, meta de entrevistas por semana

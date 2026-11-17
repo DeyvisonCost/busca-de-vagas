@@ -52,6 +52,18 @@
 **[Grupo 1]:** [...]
 **[Grupo 2]:** [...]
 
+### Inventário ATS (do Questionário ATS)
+<!-- Preenchido a partir do Artifact "Questionário ATS" (ArtifactData get, collection "questionario", doc "ats").
+     Nível ≥ 2 pode ir para competências e linhas "Stack:"; bullets só com fatos descritos abaixo;
+     nível 1 ou sem marcação nunca entra no CV. -->
+- **Nível 4 (referência):** [...]
+- **Nível 3 (uso bem):** [...]
+- **Nível 2 (já usei):** [...]
+- **Nível 1 (conheço — não usar no CV):** [...]
+- **Onde e como usou (por bloco):** [bloco — empresa, projeto, números]
+- **Perguntas abertas:** maior time · contratações · orçamento · anos · resultados com número · uso de IA ·
+  decisão de arquitetura · certificações · o que evitar: [...]
+
 ---
 
 ## 5. Formação e certificações

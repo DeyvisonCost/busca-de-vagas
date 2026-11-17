@@ -13,7 +13,8 @@ Estrutura criada:
     <pasta>/config.json         configuração lida pelos scripts e pela varredura
     <pasta>/rastreador.html     página do rastreador (publicar como Artifact com banco)
     <pasta>/tarefa-varredura.md prompt da tarefa agendada (preencher e agendar)
-    <pasta>/cv/  lotes/  vagas/  contatos/
+    <pasta>/questionario-ats.html questionário de palavras-chave (publicar como Artifact com banco)
+    <pasta>/cv/  lotes/  lotes/jd/  vagas/  contatos/
 """
 import argparse
 import json
@@ -45,7 +46,7 @@ def main():
     a = ap.parse_args()
 
     ws = os.path.abspath(os.path.expanduser(a.pasta))
-    for d in ("", "cv", "lotes", "vagas", "contatos"):
+    for d in ("", "cv", "lotes", os.path.join("lotes", "jd"), "vagas", "contatos"):
         os.makedirs(os.path.join(ws, d), exist_ok=True)
 
     suf = "-en" if a.lang == "en" else ""
@@ -55,6 +56,7 @@ def main():
             src = os.path.join(TPL, f"{name}.md")
         copy_if_missing(src, os.path.join(ws, f"{name}.md"))
     copy_if_missing(os.path.join(TPL, "tarefa-varredura.md"), os.path.join(ws, "tarefa-varredura.md"))
+    copy_if_missing(os.path.join(TPL, "questionario-ats.html"), os.path.join(ws, "questionario-ats.html"))
 
     cfg_path = os.path.join(ws, "config.json")
     if copy_if_missing(os.path.join(TPL, "config.json"), cfg_path):

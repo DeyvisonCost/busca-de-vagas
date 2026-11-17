@@ -4,6 +4,7 @@ Prompt da tarefa agendada de varredura. Na fase 5 da skill, Claude substitui:
   {{SCRIPTS}}        caminho absoluto de scripts/ da skill
   {{RASTREADOR_URL}} URL do Artifact do rastreador
   {{RESUMO_PERFIL}}  1 linha: cargo-alvo, stack principal, cidade, modelo
+  {{CARGOS_OR}}      cargos-alvo e sinônimos unidos por OR (ex.: Cargo A OR Cargo B OR Sinônimo)
 e cria a tarefa com a ferramenta de agendamento disponível. Apague este comentário ao agendar.
 -->
 Você é o assistente de busca de emprego de um usuário ({{RESUMO_PERFIL}}). Esta é uma VARREDURA AUTOMÁTICA.
@@ -17,13 +18,19 @@ PASTA DE TRABALHO: {{PASTA}}
 2. Leia as vagas já registradas: ArtifactData action "list", collection "vagas", url {{RASTREADOR_URL}},
    limit 1000. Não registre de novo vaga existente (mesmo id, ou mesma empresa + cargo). Conte as que têm
    encontradaEm de HOJE no fuso do config.json; se já atingiu o teto diário, não grave nada e encerre com 1 linha.
-3. Busque vagas publicadas desde a última varredura (ou nas últimas 24h na primeira do dia), usando os termos
-   do criterios.md, nas fontes permitidas. Métodos (detalhes no references/05-varredura.md da skill):
-   - LinkedIn sem login: https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?keywords=<termo>&location=<país>&f_WT=2&f_TPR=r7200&start=0
+3. JANELA MÍNIMA DE 72H: o LinkedIn indexa vagas com atraso e mantém a data de publicação original, então
+   janelas curtas (1–2h) perdem vagas. Busque sempre as publicadas nas últimas 72h (ou desde a última
+   varredura, se for mais) e deduplique contra o rastreador (id já registrado → pular). Use os termos do
+   criterios.md e também uma busca combinada tipo alerta com os cargos-alvo unidos por OR
+   ("{{CARGOS_OR}}"), nas fontes permitidas. Métodos (detalhes no references/05-varredura.md da skill):
+   - LinkedIn sem login: https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?keywords=<termo>&location=<país>&f_WT=2&f_TPR=r259200&start=0
      (ids em "urn:li:jobPosting:<id>"; detalhe em https://www.linkedin.com/jobs-guest/jobs/api/jobPosting/<id>).
+     O filtro remoto (f_WT=2) devolve vagas híbridas/presenciais: confirme o selo de modelo na página da vaga,
+     o local e a descrição antes de registrar.
    - Gupy: no navegador, abra https://portal.gupy.io/job-search/term=<termo> e, na própria página,
-     fetch('/api/job-search/jobs?jobName=<termo>&limit=100&offset=0'); filtre workplaceType e publishedDate.
-   - Indeed: https://<pais>.indeed.com/jobs?q=<termos>&l=<Remoto>&fromage=1&sort=date (painel da vaga com vjk=<id>).
+     fetch('/api/job-search/jobs?jobName=<termo>&limit=100&offset=0'); filtre workplaceType e
+     publishedDate >= agora − 72h.
+   - Indeed: https://<pais>.indeed.com/jobs?q=<termos>&l=<Remoto>&fromage=3&sort=date (painel da vaga com vjk=<id>).
    - Busca web: site:boards.greenhouse.io OR site:jobs.lever.co OR site:jobs.ashbyhq.com + termos + remoto/país.
    Confira para onde o botão de candidatura leva e descarte agregadores proibidos. Se uma fonte falhar ou pedir
    login/CAPTCHA, pule-a e cite no resumo.
@@ -31,10 +38,20 @@ PASTA DE TRABALHO: {{PASTA}}
    "batch" (op "set", collection "vagas", doc_id "li-<id>" / "gupy-<id>" / "indeed-<jk>" / "<fonte>-<slug>"),
    campos: titulo, empresa, fonte, link, nota, motivo (1 frase), status "preparada", regime, salario,
    publicadaEm (ISO com fuso, ou null), encontradaEm (agora, ISO com fuso), envioManual (true para LinkedIn
-   e Indeed), cvArquivo ("<arquivo>.docx"), obs (prazo, idioma, dúvidas).
-5. Gere os CVs ajustados: escreva {{PASTA}}/lotes/<AAAA-MM-DD-HHMM>.json no formato do lote-exemplo.json e rode
-   python3 "{{SCRIPTS}}/tailor.py" "{{PASTA}}/lotes/<arquivo>.json". O "foco" usa só fatos de
-   {{PASTA}}/perfil-mestre.md; nunca invente experiência, número ou tecnologia. Pretensão conforme os pisos.
+   e Indeed), cvArquivo ("<arquivo>.docx"), cobertura (inteiro 0–100, do <arquivo>-ats.md do passo 5 — é o
+   indicador "Match" do rastreador), obs (prazo, idioma, dúvidas, % de cobertura).
+5. Gere os CVs ajustados POR PALAVRA-CHAVE (ATS). Para cada vaga: (a) salve a descrição completa em
+   {{PASTA}}/lotes/jd/<arquivo>.txt; (b) leia a seção "Inventário ATS" de {{PASTA}}/perfil-mestre.md;
+   (c) escreva {{PASTA}}/lotes/<AAAA-MM-DD-HHMM>.json no formato do lote-exemplo.json com: titulo (cargo da
+   vaga + 2–3 termos dela), "resumo" (resumo inteiro reescrito em 5–6 linhas com os termos EXATOS da vaga,
+   mesma grafia, só fatos do perfil-mestre), "palavras_chave" (12–25 termos da vaga verdadeiros no
+   inventário), "bullets_extra" e "stack" opcionais (só fatos do perfil-mestre), competencias_primeiro,
+   pretensao, notas e "vaga_texto": "lotes/jd/<arquivo>.txt"; (d) rode
+   python3 "{{SCRIPTS}}/tailor.py" "{{PASTA}}/lotes/<arquivo>.json" — ele grava <arquivo>-ats.md com a
+   cobertura. Meta ≥ 90%: se ficar abaixo, acrescente os termos faltantes QUE FOREM VERDADE no inventário e
+   rode de novo. Termo nível 1 ou não marcado no questionário NÃO entra. Nunca invente experiência, empresa,
+   número ou tecnologia. Pretensão conforme os pisos; perguntas eliminatórias de salário seguem a faixa do
+   criterios.md. Grave a cobertura no rastreador (passo 4).
 6. E-mail e agenda (só se os conectores Gmail/Google Calendar estiverem disponíveis e o config.json pedir:
    "checagem_email" = "cada_varredura", ou = "diaria" e "ultima_checagem_email" não é de hoje): siga
    references/09-email-e-agenda.md da skill. SÓ LEITURA: nunca envie, responda, arquive, apague ou rotule

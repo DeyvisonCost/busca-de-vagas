@@ -12,8 +12,10 @@
       ["job", "Fictional Payments Co.", "Senior Data Engineer", "2022 – present"],
       ["b", "Technical reference for a 5-person team: modeling standards, code review and onboarding."],
       ["b", "Migrated 120 legacy pipelines to Airflow and dbt with a 1-hour freshness SLA."],
+      ["stack", "Stack: Python, SQL, dbt, Airflow, AWS (S3, Glue, Redshift), Terraform"],
       ["job", "Example Retail Inc.", "Data Engineer", "2019 – 2022"],
-      ["b", "Built the revenue model used for monthly close, removing 3 days of manual reconciliation."]
+      ["b", "Built the revenue model used for monthly close, removing 3 days of manual reconciliation."],
+      ["stack", "Stack: Python, SQL, PostgreSQL, Power BI"]
     ]},
     {"id": "skills", "title": "SKILLS", "items": [
       ["kv", "Data", "Python, SQL, dbt, Airflow, Spark"],

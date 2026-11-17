@@ -32,7 +32,12 @@ Objetivo: LinkedIn, Gupy, Indeed/Glassdoor, Revelo e afins dizendo a mesma coisa
 
 **Gupy**
 - O currículo da Gupy é um perfil único usado em todas as vagas: equalize-o primeiro.
-- **Respostas de candidatura não são editáveis** depois do envio — por isso perguntas factuais duvidosas viram
+- **A Gupy ranqueia pelo perfil, não pelo PDF anexado.** Reescreva a descrição de cada experiência rica em
+  palavras-chave (termos que as vagas-alvo usam, só os verdadeiros no Inventário ATS) e termine com uma linha
+  "Stack: …". Nas **30 habilidades**, troque as genéricas fracas (ex.: "Comunicação", "Pacote Office") pelas
+  tecnologias e métodos mais buscados nas vagas-alvo.
+- Alterações no perfil se replicam para as candidaturas ativas — vale atualizar mesmo depois de aplicar.
+- **Respostas às perguntas das empresas não são editáveis** depois de salvas — por isso perguntas factuais duvidosas viram
   "bloqueada" na fase 7.
 
 **Indeed / Glassdoor**

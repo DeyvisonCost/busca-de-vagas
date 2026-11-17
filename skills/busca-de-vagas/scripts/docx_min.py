@@ -1,7 +1,7 @@
 """Escritor mínimo de DOCX só com a biblioteca padrão (zipfile + XML).
 
 Cobre o que um currículo ATS de uma coluna precisa: parágrafos com runs (negrito,
-tamanho, cor), bullets reais (lista do Word), tabulação à direita e linha inferior
+itálico, tamanho, cor), bullets reais (lista do Word), tabulação à direita e linha inferior
 em títulos de seção. Sem dependências externas, roda em qualquer Python 3.8+.
 """
 import zipfile
@@ -26,7 +26,7 @@ class Doc:
         return cm(self.page[0] - self.margins[1] - self.margins[3])
 
     def para(self, runs=(), after=2, before=0, line=1.1, bullet=False, rule=False, right_tab=None):
-        """runs: lista de (texto, {"bold":bool, "size":pt, "color":"RRGGBB"}). '\t' vira tabulação."""
+        """runs: lista de (texto, {"bold":bool, "italic":bool, "size":pt, "color":"RRGGBB"}). '\t' vira tabulação."""
         ppr = [f'<w:spacing w:before="{int(before * 20)}" w:after="{int(after * 20)}" w:line="{int(240 * line)}" w:lineRule="auto"/>']
         if bullet:
             ppr.insert(0, '<w:numPr><w:ilvl w:val="0"/><w:numId w:val="1"/></w:numPr>')
@@ -39,6 +39,8 @@ class Doc:
             rpr = ""
             if fmt.get("bold"):
                 rpr += "<w:b/>"
+            if fmt.get("italic"):
+                rpr += "<w:i/>"
             if fmt.get("color"):
                 rpr += f'<w:color w:val="{fmt["color"]}"/>'
             if fmt.get("size"):

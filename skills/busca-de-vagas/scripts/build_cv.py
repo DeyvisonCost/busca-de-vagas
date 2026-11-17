@@ -13,11 +13,13 @@ Formato do JSON (veja templates/cv-exemplo-pt.json):
     {"id": "summary", "title": "RESUMO", "items": [["p", "texto"]]},
     {"id": "experience", "title": "EXPERIÊNCIA", "items": [
         ["job", "Empresa", "Cargo", "2022 – atual"],
-        ["b", "Conquista com número"]]},
+        ["b", "Conquista com número"],
+        ["stack", "Stack: tecnologia, tecnologia, tecnologia"]]},
     {"id": "skills", "title": "COMPETÊNCIAS", "items": [["kv", "Grupo", "item, item"]]}
   ]
 }
-Tipos de item: "p" parágrafo, "b" bullet, "job" (empresa, cargo, período), "kv" (rótulo, valor).
+Tipos de item: "p" parágrafo, "b" bullet, "job" (empresa, cargo, período), "kv" (rótulo, valor),
+"stack" (linha curta em itálico sob o cargo, ex.: "Stack: Python, dbt, AWS" — ajuda o ATS a casar termos).
 
 O DOCX é escrito só com a biblioteca padrão (docx_min.py), sem instalar nada.
 O PDF é gerado a partir de um HTML equivalente com Chrome/Chromium/Edge headless;
@@ -66,6 +68,8 @@ def build_docx(cv, out_docx):
                 _, company, role, dates = it
                 d.para([(f"{role} | {company}", {"bold": True, "size": 10.5}), ("\t" + dates, {"size": 10})],
                        before=6, after=1, right_tab=d.text_width)
+            elif kind == "stack":
+                d.para([(it[1], {"italic": True, "size": 9, "color": "333333"})], after=2)
             elif kind == "kv":
                 d.para([(it[1] + ": ", {"bold": True}), (it[2], {})], after=2)
             else:
@@ -85,6 +89,7 @@ def build_html(cv, out_html):
     .job {{ display: flex; justify-content: space-between; font-weight: bold; font-size: 10.5pt; margin: 7pt 0 1pt; break-after: avoid; }}
     .job span:last-child {{ font-weight: normal; font-size: 10pt; }}
     ul {{ margin: 0; padding-left: 14pt; }} li {{ margin: 0 0 2pt; }} p {{ margin: 0 0 2pt; }}
+    .stack {{ font-style: italic; font-size: 9pt; color: #333; }}
     </style></head><body>
     <h1>{e(cv['name'])}</h1><div class="t">{e(cv['title'])}</div><div class="c">{e(cv['contact'])}</div>"""]
     for s in cv["sections"]:
@@ -106,6 +111,8 @@ def build_html(cv, out_html):
                 h.append(f'<div class="job"><span>{e(it[2])} | {e(it[1])}</span><span>{e(it[3])}</span></div>')
             elif it[0] == "kv":
                 h.append(f"<p><b>{e(it[1])}:</b> {e(it[2])}</p>")
+            elif it[0] == "stack":
+                h.append(f'<p class="stack">{e(it[1])}</p>')
         if open_ul:
             h.append("</ul>")
     h.append("</body></html>")

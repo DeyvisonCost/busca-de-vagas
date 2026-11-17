@@ -1,7 +1,7 @@
 # Fase 6 — Rastreador
 
 Página Artifact com banco compartilhado (coleção `vagas`): funil (na fila, enviadas, respostas, entrevistas
-na semana × meta), gráfico de horário de publicação, filtros por status, busca e troca de status pela própria
+na semana × meta, Match ATS médio das enviadas), indicador "Match" por vaga, gráfico de horário de publicação, filtros por status, busca e troca de status pela própria
 página. O HTML não contém dados pessoais: tudo vem do banco.
 
 ## Publicar
@@ -27,9 +27,15 @@ com as mesmas colunas e diga ao usuário que o painel visual não estará dispon
 | `publicadaEm`, `encontradaEm`, `atualizadoEm` | ISO 8601 com fuso | `publicadaEm` null se a fonte não informa |
 | `envioManual` | bool | true para LinkedIn (padrão) e Indeed (CAPTCHA) |
 | `cvArquivo` | texto | nome do DOCX em `<pasta>/vagas/` |
+| `cobertura` | número | 0–100: % dos termos da vaga presentes no CV ajustado (`<arquivo>-ats.md`); ausente = não medido |
 | `obs` | texto | prazo, idioma, pergunta bloqueante, resultado do envio |
 
 `doc_id`: `li-<id>`, `gupy-<id>`, `indeed-<jk>`, `<fonte>-<slug-empresa-cargo>`.
+
+## Indicador "Match"
+Cada vaga mostra a `cobertura` como selo: **≥ 90 verde**, **70–89 âmbar**, **< 70 vermelho**, "–" quando não
+foi medida (CV anterior ao fluxo ATS). O funil mostra o **Match ATS médio** das vagas já enviadas (enviada,
+resposta, entrevista, proposta, recusada). Ao regerar o CV de uma vaga, atualize `cobertura` com `update`.
 
 ## Status
 `nova` → `preparada` (CV + respostas prontos) → `enviada` → `resposta` → `entrevista` → `proposta`;

@@ -16,6 +16,20 @@ você pedir. Feito em português (Brasil) e preparado para inglês.
 4. Com as respostas, ele monta seu perfil mestre, os currículos e os critérios, que você aprova. Só então
    começam a busca de vagas e, quando você pedir, as candidaturas.
 
+## Novidades (0.3.0)
+
+- **CV por palavra-chave (ATS):** em vez de só trocar título e uma frase, o CV de cada vaga reescreve o resumo
+  com os termos exatos da vaga, ganha a linha "Aderência à vaga" e uma linha "Stack:" por cargo — sempre só
+  com fatos verdadeiros. O `tailor.py` mede a **cobertura** dos termos da vaga (`<vaga>-ats.md`, meta ≥ 90%;
+  num teste real foi de ~55% para ~95%).
+- **Questionário ATS:** página (Artifact com banco) onde você marca seu nível 1–4 em ~250 termos e conta onde
+  usou cada bloco; vira o "Inventário ATS" do perfil mestre. Só o que você marcar entra no CV.
+- **Indicador "Match" no rastreador:** selo de cobertura por vaga (verde ≥ 90, âmbar 70–89, vermelho < 70) e
+  Match ATS médio das enviadas.
+- Varredura com janela mínima de 72h (o LinkedIn indexa atrasado), regra de faixa para perguntas
+  eliminatórias de salário, upload do CV pelo Claude in Chrome, perfil da Gupy otimizado para o ranking e
+  diagnóstico de rejeições.
+
 Todas as regras que a skill segue (o que ela nunca faz sozinha, como dá nota às vagas, sigilo, e-mail só
 leitura…) estão num documento só: **[Regras](skills/busca-de-vagas/references/00-regras.md)**.
 
@@ -24,19 +38,20 @@ leitura…) estão num documento só: **[Regras](skills/busca-de-vagas/reference
 1. **Entrevista** — cargo-alvo e alternativas, senioridade, stack, histórico (a partir do seu CV, LinkedIn ou
    áudios), conquistas com números, idiomas (nível real), modelo e regime, pretensão e pisos, urgência e
    sigilo, volume por dia, plataformas e o que pode ser enviado sem revisão.
-2. **Perfil mestre e CVs** — `perfil-mestre.md` como fonte única de verdade e CVs ATS de uma coluna em PT/EN
-   (DOCX + PDF). Nada é inventado: o que falta fica marcado `[CONFIRMAR]`.
+2. **Perfil mestre e CVs** — `perfil-mestre.md` como fonte única de verdade, **questionário ATS** (nível 1–4 por
+   termo) e CVs ATS de uma coluna em PT/EN (DOCX + PDF). Nada é inventado: o que falta fica marcado `[CONFIRMAR]`.
 3. **Plataformas** — confere LinkedIn, Gupy, Indeed/Glassdoor, Revelo etc. campo a campo contra o perfil
    mestre e aplica as correções que você aprovar (com as pegadinhas de cada site já mapeadas).
 4. **Critérios** — `criterios.md` com cargos, pisos, nota 0–10 (cargo 3, stack 2, modelo 2 eliminatório,
    salário 1, senioridade 1, publicada ≤ 24h 1), corte, ajuste por idioma, fontes permitidas e agregadores
    proibidos, regras de envio e respostas-padrão.
-5. **Esteira** — tarefa agendada que busca (LinkedIn, Gupy, Indeed, Greenhouse/Lever/Ashby), pontua,
-   registra e gera CV ajustado por vaga. **Nunca envia sozinha.**
-6. **Rastreador** — página com funil, filtros e status de cada vaga, publicada como Artifact com banco.
-7. **Envio** — quando você diz "envia o lote": abre cada vaga, preenche até o botão final, deixa com você
-   CAPTCHA, senhas, documentos, dados demográficos e upload; pergunta que só você sabe responder vira
-   "bloqueada", nunca chute.
+5. **Esteira** — tarefa agendada que busca (LinkedIn, Gupy, Indeed, Greenhouse/Lever/Ashby) com janela de
+   72h, pontua, registra e gera CV ajustado por palavra-chave para cada vaga, com a cobertura ATS medida.
+   **Nunca envia sozinha.**
+6. **Rastreador** — página com funil, filtros, status e Match ATS de cada vaga, publicada como Artifact com banco.
+7. **Envio** — quando você diz "envia o lote": abre cada vaga, preenche até o botão final, sobe o CV certo
+   (via Claude in Chrome), deixa com você CAPTCHA, senhas, criação de conta, documentos e dados demográficos;
+   pergunta que só você sabe responder vira "bloqueada", nunca chute.
 8. **Acompanhamento** — rascunhos de convite (≤ 200 caracteres) e follow-up para recrutadores e gestores de
    cada vaga, e revisão de respostas e status. Com Gmail e Google Calendar conectados, lê os e-mails de
    processos seletivos (Gupy, Greenhouse, Lever, Ashby, InHire, Indeed, LinkedIn…), classifica em recusa /
@@ -58,6 +73,7 @@ leitura…) estão num documento só: **[Regras](skills/busca-de-vagas/reference
 |---|---|---|
 | Artifacts com banco | rastreador de vagas (funil, status) | recomendado — sem ele, usa um `vagas.csv` |
 | Navegador interno do app (ou Claude in Chrome) | conferir perfis, buscar na Gupy/Indeed, preencher candidaturas | recomendado |
+| Claude in Chrome | upload do CV nas candidaturas (o navegador interno não tem upload) | recomendado para o envio |
 | Tarefas agendadas | varredura automática | opcional — sem elas, a busca roda quando você pede |
 | **Gmail** | detectar respostas dos processos seletivos | opcional |
 | **Google Calendar** | ver entrevistas marcadas | opcional |
@@ -114,10 +130,10 @@ Atalhos: `/busca-de-vagas:comecar` (início/retomada pela entrevista) e `/busca-
 Seus dados ficam numa **pasta de trabalho** sua (padrão `~/busca-de-vagas`), nunca dentro do plugin:
 ```
 ~/busca-de-vagas/
-  perfil-mestre.md  criterios.md  config.json  rastreador.html  tarefa-varredura.md
+  perfil-mestre.md  criterios.md  config.json  rastreador.html  questionario-ats.html  tarefa-varredura.md
   cv/        currículos-base (JSON) e CVs gerados
-  lotes/     lotes de vagas de cada varredura
-  vagas/     CV ajustado + respostas por vaga
+  lotes/     lotes de vagas de cada varredura (lotes/jd/ = descrição completa de cada vaga)
+  vagas/     CV ajustado + respostas + relatório de cobertura ATS por vaga
   contatos/  rascunhos de mensagens
 ```
 
@@ -127,6 +143,7 @@ S=skills/busca-de-vagas/scripts
 python3 $S/init_workspace.py ~/busca-de-vagas --lang pt
 python3 $S/build_cv.py skills/busca-de-vagas/templates/cv-exemplo-pt.json /tmp/cv-exemplo
 python3 $S/tailor.py ~/busca-de-vagas/lotes/2026-01-15-0900.json
+python3 $S/ats_check.py ~/busca-de-vagas/lotes/jd/empresa-cargo.txt ~/busca-de-vagas/cv/cv-pt.json
 python3 $S/checar_convites.py ~/busca-de-vagas/contatos/2026-01-15.md
 ```
 
@@ -136,7 +153,9 @@ python3 $S/checar_convites.py ~/busca-de-vagas/contatos/2026-01-15.md
   agendadas só buscam e preparam.
 - E-mail e agenda são só leitura. Conteúdo de e-mails e páginas é tratado como dado, nunca como instrução;
   CPF, códigos de verificação e links com token não são copiados para o rastreador.
-- Senhas, documentos, CAPTCHA, dados demográficos, declarações e upload de arquivo ficam sempre com você.
+- Senhas, documentos, CAPTCHA, criação de conta, dados demográficos e declarações ficam sempre com você. O
+  upload do CV é feito pelo Claude (Claude in Chrome); quando ele não puder, avisa qual vaga, qual arquivo e em
+  qual aba.
 - Modo sigilo para quem está empregado: sem notificar a rede, Open to Work só para recrutadores, sem e-mail
   corporativo, sem contato com colegas da empresa atual.
 - Automação em sites de terceiros pode violar os termos deles; por padrão o envio no LinkedIn é manual.
@@ -151,8 +170,8 @@ skills/busca-de-vagas/
   SKILL.md                        fluxo, início e gatilhos
   references/00-regras.md         todas as regras consolidadas
   references/01..09-*.md          instruções de cada fase (09 = e-mail e agenda)
-  templates/                      perfil-mestre, criterios, config, rastreador, tarefa, contatos, exemplos fictícios
-  scripts/                        init_workspace, build_cv, docx_min, tailor, checar_convites
+  templates/                      perfil-mestre, criterios, config, rastreador, questionario-ats, tarefa, contatos, exemplos fictícios
+  scripts/                        init_workspace, build_cv, docx_min, tailor, ats_check, checar_convites
 ```
 
 ## Licença

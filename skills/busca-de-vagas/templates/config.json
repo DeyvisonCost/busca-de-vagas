@@ -2,6 +2,7 @@
   "idioma": "pt",
   "fuso": "America/Sao_Paulo",
   "rastreador_url": null,
+  "questionario_url": null,
   "cv_base": {
     "pt": "cv/cv-pt.json",
     "en": "cv/cv-en.json"

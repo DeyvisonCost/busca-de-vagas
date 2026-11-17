@@ -84,6 +84,8 @@ svg text { fill: var(--muted); font-family: var(--font-data); font-size: 10px; }
 .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 2px; }
 .tag { font-size: 0.75rem; border-radius: 6px; padding: 1px 7px; background: var(--info-soft); color: var(--info); }
 .tag.manual { background: var(--warn-soft); color: var(--warn); }
+.match { font-family: var(--font-data); font-size: 0.78rem; font-weight: 500; display: inline-grid; place-items: center; min-width: 44px; height: 22px; padding: 0 6px; border-radius: 11px; font-variant-numeric: tabular-nums; background: var(--line); color: var(--muted); }
+.match.hi { background: var(--ok-soft); color: var(--ok); } .match.md { background: var(--warn-soft); color: var(--warn); } .match.lo { background: var(--bad-soft); color: var(--bad); }
 .side { display: grid; gap: 6px; justify-items: end; }
 select { font: inherit; font-size: 0.85rem; padding: 4px 8px; border-radius: 8px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); }
 .pill { font-size: 0.78rem; font-weight: 600; border-radius: 999px; padding: 2px 10px; white-space: nowrap; }
@@ -142,6 +144,8 @@ select { font: inherit; font-size: 0.85rem; padding: 4px 8px; border-radius: 8px
     pt: {
       locale: "pt-BR", funnel: "Funil", hours: "Horário de publicação das vagas encontradas", jobs: "Vagas",
       queue: "Na fila para envio", sent: "Enviadas", replies: "Respostas", goal: (g) => `Entrevistas na semana · meta ${g}`,
+      matchAvg: "Match ATS médio (enviadas)", match: "Match", matchNone: "Não medido",
+      matchTip: (v) => `${v}% dos termos da vaga aparecem no currículo ajustado`,
       status: { nova: "Nova", preparada: "Pronta p/ envio", enviada: "Enviada", bloqueada: "Bloqueada", resposta: "Resposta",
                 entrevista: "Entrevista", proposta: "Proposta", recusada: "Recusada", descartada: "Descartada" },
       filters: { todas: "Todas", preparada: "Prontas", bloqueada: "Bloqueadas", enviada: "Enviadas", entrevista: "Entrevistas" },
@@ -159,6 +163,8 @@ select { font: inherit; font-size: 0.85rem; padding: 4px 8px; border-radius: 8px
     en: {
       locale: "en-US", funnel: "Funnel", hours: "Posting time of the jobs found", jobs: "Jobs",
       queue: "Ready to apply", sent: "Applied", replies: "Replies", goal: (g) => `Interviews this week · goal ${g}`,
+      matchAvg: "Avg. ATS match (applied)", match: "Match", matchNone: "Not measured",
+      matchTip: (v) => `${v}% of the job's terms appear in the tailored resume`,
       status: { nova: "New", preparada: "Ready", enviada: "Applied", bloqueada: "Blocked", resposta: "Reply",
                 entrevista: "Interview", proposta: "Offer", recusada: "Rejected", descartada: "Discarded" },
       filters: { todas: "All", preparada: "Ready", bloqueada: "Blocked", enviada: "Applied", entrevista: "Interviews" },
@@ -195,6 +201,13 @@ select { font: inherit; font-size: 0.85rem; padding: 4px 8px; border-radius: 8px
 
   function weekStart() { const d = new Date(); const day = (d.getDay() + 6) % 7; d.setHours(0, 0, 0, 0); d.setDate(d.getDate() - day); return d; }
 
+  // cobertura = % dos termos da vaga presentes no CV ajustado (relatório <arquivo>-ats.md do tailor.py)
+  function matchBadge(v) {
+    if (typeof v !== "number") return `<span class="match" title="${esc(T.matchNone)}">–</span>`;
+    const cl = v >= 90 ? "hi" : v >= 70 ? "md" : "lo";
+    return `<span class="match ${cl}" title="${esc(T.matchTip(v))}">${v}%</span>`;
+  }
+
   function renderFilters() {
     $("filters").innerHTML = FILTERS.map(([k, l]) => `<button class="chip" type="button" data-f="${k}" aria-pressed="${k === filter}">${l}</button>`).join("");
   }
@@ -205,6 +218,8 @@ select { font: inherit; font-size: 0.85rem; padding: 4px 8px; border-radius: 8px
     const week = rows.filter((r) => r.status === "entrevista" && r.atualizadoEm && new Date(r.atualizadoEm) >= ws).length;
     const vals = [[c("preparada") + c("nova"), T.queue], [rows.filter((r) => SENT.includes(r.status)).length, T.sent],
                   [rows.filter((r) => REPLIED.includes(r.status)).length, T.replies], [week, T.goal(CONFIG.goal)]];
+    const cobs = rows.filter((r) => SENT.includes(r.status) && typeof r.cobertura === "number").map((r) => r.cobertura);
+    vals.push([cobs.length ? Math.round(cobs.reduce((a, b) => a + b, 0) / cobs.length) + "%" : "–", T.matchAvg]);
     $("funnel").innerHTML = vals.map(([v, l], i) => `<div class="stat${i === 3 ? " goal" : ""}"><b>${v}</b><span>${esc(l)}</span></div>`).join("");
   }
 
@@ -254,7 +269,7 @@ select { font: inherit; font-size: 0.85rem; padding: 4px 8px; border-radius: 8px
           ${r.obs ? `<div class="note"><b>${esc(T.obs)}:</b> ${esc(r.obs)}</div>` : ""}
           ${tags.length ? `<div class="tags">${tags.join("")}</div>` : ""}
         </div>
-        <div class="side"><span class="pill s-${esc(r.status)}">${esc(T.status[r.status] || r.status || T.status.nova)}</span>${select}</div>
+        <div class="side">${matchBadge(r.cobertura)}<span class="pill s-${esc(r.status)}">${esc(T.status[r.status] || r.status || T.status.nova)}</span>${select}</div>
       </article>`;
     }).join("");
   }

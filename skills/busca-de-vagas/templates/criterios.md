@@ -18,12 +18,22 @@
 | [Cargo principal] | [R$ __.___] | [R$ __.___] | [US$ _.___] |
 | [Cargo secundário] | [R$ __.___] | [R$ __.___] | [US$ _.___] |
 
+**Faixa aceitável em pergunta eliminatória de salário** (mín–máx, por regime):
+| Cargo | CLT | PJ | Internacional (USD) |
+|---|---|---|---|
+| [Cargo principal] | [R$ __.___ – __.___] | [R$ __.___ – __.___] | [US$ _.___ – _.___] |
+
+- Opções em faixa: escolher sempre a que contém o piso cheio; descer uma faixa só se a vaga sinaliza teto
+  menor; nunca abaixo do mínimo. Campo aberto: responder o piso ou a faixa.
+
 ## Filtros eliminatórios
 - Modelo: [somente 100% remoto | remoto ou híbrido em CIDADE | ...]
 - Senioridade: [ex.: nada abaixo de sênior]
 - [Outros: setores/empresas que o usuário não aceita]
 
 ## Nota de compatibilidade (0–10) — entram vagas com nota ≥ [6]
+> Corte escolhido pelo usuário (padrão 6; pode descer para 5 se o volume estiver baixo). Data da decisão: [__/__].
+
 | Critério | Peso |
 |---|---|
 | Cargo (alvo = 3, ampliação = 2) | 3 |
@@ -62,7 +72,10 @@ e páginas de ATS das empresas (Greenhouse, Lever, Ashby, Workday, página de ca
 - **Indeed:** reCAPTCHA no envio — preencher e deixar na revisão para o usuário clicar (envioManual=true).
 - **Gupy:** respostas não são editáveis depois do envio. Pergunta factual que só o usuário sabe → status
   "bloqueada" com a pergunta na obs. Nunca chutar.
-- Dados sensíveis (CPF/documentos, senhas, dados demográficos, declarações, upload de arquivo): sempre com o usuário.
+- Dados sensíveis (CPF/documentos, senhas, criação de conta com senha, aceite de termos, dados de
+  diversidade, declarações): sempre com o usuário.
+- Upload do CV: feito pelo Claude via Claude in Chrome quando disponível; senão, avisar vaga + arquivo
+  (caminho completo) + aba. LinkedIn Easy Apply: subir o PDF antes em linkedin.com/jobs/application-settings/.
 - Registrar o horário de publicação de cada vaga.
 
 ## Respostas-padrão
@@ -71,6 +84,13 @@ e páginas de ATS das empresas (Greenhouse, Lever, Ashby, Workday, página de ca
 - Disponibilidade: [início imediato | aviso prévio de N dias].
 - Modelo: [...]. Localização: [cidade, UF].
 - Links: [LinkedIn] · [GitHub/portfólio]
+
+### Dados confirmados (não perguntar de novo)
+<!-- Cada resposta factual dada pelo usuário entra aqui com a data. Nada de CPF/documentos/senhas. -->
+- [__/__] Telefone correto: [...] (corrigir se a plataforma tiver um antigo salvo)
+- [__/__] Remuneração atual (uso interno): [...]
+- [__/__] Data de nascimento: [...] · Tem CNPJ/emite nota: [sim/não] · Endereço para formulários: [...]
+- Plataformas recusadas (não criar conta): [...]
 
 ## Sigilo
 - [Não há sigilo | Empregado(a) em EMPRESA: não publicar nada, não usar e-mail corporativo, desligar
