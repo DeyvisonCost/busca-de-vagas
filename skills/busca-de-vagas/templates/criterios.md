@@ -54,7 +54,8 @@
 - Varredura: [ex.: dias úteis de hora em hora das 08h às 20h; fim de semana 1x às 10h] (fuso [America/Sao_Paulo]).
 
 ## Fontes permitidas
-LinkedIn, Gupy (portal.gupy.io), Indeed, Glassdoor, [Revelo, Programathor, GeekHunter, Wellfound, ...],
+LinkedIn, Gupy (portal.gupy.io), Indeed, Glassdoor, [Revelo, Programathor, GeekHunter, Wellfound, Remotar, Trampos, Coodesh,
+Strider, Turing, repositórios de vagas no GitHub, ...],
 e páginas de ATS das empresas (Greenhouse, Lever, Ashby, Workday, página de carreiras).
 
 ## Fontes proibidas

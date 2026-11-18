@@ -32,6 +32,9 @@ PASTA DE TRABALHO: {{PASTA}}
      publishedDate >= agora − 72h.
    - Indeed: https://<pais>.indeed.com/jobs?q=<termos>&l=<Remoto>&fromage=3&sort=date (painel da vaga com vjk=<id>).
    - Busca web: site:boards.greenhouse.io OR site:jobs.lever.co OR site:jobs.ashbyhq.com + termos + remoto/país.
+   - Fontes extras (toda rodada): Remotar, Trampos, Coodesh, Revelo, Programathor, GeekHunter, Glassdoor, Wellfound,
+     Strider, Turing e repositórios de vagas no GitHub via API (issues abertas desde o início da janela) — ver
+     references/05-varredura.md. No resumo, diga quantas vagas cada fonte trouxe e quais falharam.
    Confira para onde o botão de candidatura leva e descarte agregadores proibidos. Se uma fonte falhar ou pedir
    login/CAPTCHA, pule-a e cite no resumo.
 4. Para cada vaga com nota ≥ corte (e que passe nos eliminatórios), grave no rastreador com ArtifactData action

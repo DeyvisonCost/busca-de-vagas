@@ -43,9 +43,16 @@ rastreador** (id já registrado → pular). Some uma **busca combinada tipo aler
 - Busca web: `site:boards.greenhouse.io OR site:job-boards.greenhouse.io OR site:jobs.lever.co OR site:jobs.ashbyhq.com`
   + termos + "remote" + país/região. Abra a vaga para confirmar que está aberta e a data.
 
-**Outras fontes da área/país** listadas em `criterios.md` (Revelo, Programathor, GeekHunter, Wellfound,
-repositórios de vagas no GitHub etc.): use o navegador ou busca web; registre só se a candidatura acontecer
-numa fonte permitida.
+**Fontes extras — varrer em toda rodada** (Brasil; adapte ao país do usuário em `criterios.md`):
+- **Remotar** (remotar.com.br), **Trampos** (trampos.co), **Coodesh** (coodesh.com/vagas): vagas remotas de tecnologia;
+  busque pelos cargos-alvo com filtro remoto.
+- **Revelo**, **Programathor**, **GeekHunter**, **Glassdoor** (buscas "<cargo> remoto").
+- **Wellfound**, **Strider**, **Turing**: vagas remotas para LATAM; muitas exigem inglês falado — aplique a regra de idioma.
+- **Repositórios de vagas no GitHub** (ex.: `frontendbr/vagas`, `react-brasil/vagas`, `backend-br/vagas`): pela API,
+  issues abertas criadas na janela — `https://api.github.com/repos/<repo>/issues?state=open&since=<ISO início da janela>&per_page=100` —
+  filtrando títulos/labels pelos cargos-alvo e "Remoto". O corpo da issue traz requisitos, regime e link de candidatura.
+Use o navegador quando a página exigir JavaScript e busca web/fetch quando bastar. Registre só se a candidatura
+acontecer numa fonte permitida, e informe no resumo quantas vagas cada fonte trouxe e quais falharam.
 
 ## 3. Pontuar e registrar
 - Nota conforme `criterios.md` (ver fase 4). Elimine incompatíveis antes de pontuar o resto.
